@@ -54,6 +54,7 @@ import org.dot.device.DeviceExtras.Constants;
 import org.dot.device.DeviceExtras.doze.DozeSettingsActivity;
 import org.dot.device.DeviceExtras.FileUtils;
 import org.dot.device.DeviceExtras.R;
+import org.dot.device.DeviceExtras.ModeSwitch.DolbySwitch;
 
 public class DeviceExtras extends PreferenceFragment
         implements Preference.OnPreferenceChangeListener {
@@ -74,6 +75,7 @@ public class DeviceExtras extends PreferenceFragment
     public static final String KEY_USB2_SWITCH = "usb2_fast_charge";
     public static final String KEY_VIBSTRENGTH = "vib_strength";
 
+    private static final String KEY_ENABLE_DOLBY_ATMOS = "enable_dolby_atmos";
     private static ListPreference mFpsInfoPosition;
     private static ListPreference mFpsInfoColor;
     private static SwitchPreference mFpsInfo;
@@ -81,6 +83,7 @@ public class DeviceExtras extends PreferenceFragment
     private static TwoStatePreference mGameModeSwitch;
     private static TwoStatePreference mHBMModeSwitch;
     private static TwoStatePreference mUSB2FastChargeModeSwitch;
+    private static TwoStatePreference mEnableDolbyAtmos;
 
     private CustomSeekBarPreference mFpsInfoTextSizePreference;
     private Preference mDozeSettings;
@@ -88,12 +91,18 @@ public class DeviceExtras extends PreferenceFragment
     private ListPreference mMiddleKeyPref;
     private ListPreference mTopKeyPref;
     private VibratorStrengthPreference mVibratorStrength;
+    private DolbySwitch mDolbySwitch;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getContext());
         addPreferencesFromResource(R.xml.main);
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mDolbySwitch = new DolbySwitch(this.getContext());
+        mEnableDolbyAtmos = (TwoStatePreference) findPreference(KEY_ENABLE_DOLBY_ATMOS);
+        mEnableDolbyAtmos.setChecked(mDolbySwitch.isCurrentlyEnabled());
+        mEnableDolbyAtmos.setOnPreferenceChangeListener(this);
 
         // DozeSettings Activity
         mDozeSettings = (Preference)findPreference(KEY_DOZE);
@@ -193,6 +202,9 @@ public class DeviceExtras extends PreferenceFragment
             SharedPreferences.Editor prefChange = PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
             prefChange.putBoolean(KEY_AUTO_HBM_SWITCH, enabled).commit();
             FileUtils.enableService(getContext());
+            return true;
+        } else if (preference == mEnableDolbyAtmos) {
+            mDolbySwitch.setEnabled((Boolean) newValue);
             return true;
         } else if (preference == mHBMModeSwitch) {
             Boolean enabled = (Boolean) newValue;
