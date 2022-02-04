@@ -1,1 +1,6 @@
 allow init iorapd_data_file:file { getattr };
+allow init op2_file:dir { mounton };
+allow init vendor_cwb_prop:file { map  read  relabelto  write };
+allow init vendor_db_security_prop:file { map  read  relabelto  write };
+allow vendor_init apk_data_file:dir { create  getattr  ioctl  open  read  setattr };
+allow vendor_init block_device:lnk_file { setattr };

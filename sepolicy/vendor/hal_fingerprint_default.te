@@ -4,3 +4,7 @@ allow hal_fingerprint_default sysfs_color:file { read  write };
 allow hal_fingerprint_default vendor_sysfs_battery_supply:dir { search };
 allow hal_fingerprint_default default_prop:file { open };
 allow hal_fingerprint_default oem_file:dir { search };
+
+allow hal_fingerprint_default default_prop:file { getattr  map };
+allow hal_fingerprint_default oem_file:dir { add_name  write };
+allow hal_fingerprint_default oem_file:file { create };
