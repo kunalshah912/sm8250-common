@@ -1059,10 +1059,3 @@ on property:persist.sys.iolimiter.enable=true
     chown system system /sys/module/oneplus_healthinfo/parameters/ohm_sample_time
     chown system system /sys/module/oneplus_healthinfo/parameters/ohm_action_ctrl
     chown system system /proc/iolimit_enable
-
-#huangwen.chen#OPTI, 2020/9/16, [OPTI-43], add for zram writeback
-on property:persist.vendor.oem.dump=0
-    setprop persist.vendor.zwriteback.backup 0
-
-on property:persist.vendor.oem.dump=1
-    setprop persist.vendor.zwriteback.backup 1
