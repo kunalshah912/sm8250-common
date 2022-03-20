@@ -36,6 +36,15 @@
 #define AUTH_STATUS_PATH  "/sys/class/drm/card0-DSI-1/auth_status"
 #define POWER_STATUS_PATH "/sys/class/drm/card0-DSI-1/power_status"
 
+/*
+ * Write value to path and close file.
+ */
+template <typename T>
+static void set(const std::string& path, const T& value) {
+    std::ofstream file(path);
+    file << value;
+}
+
 namespace android {
 namespace hardware {
 namespace biometrics {
